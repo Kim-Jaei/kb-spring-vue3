@@ -42,4 +42,12 @@
         values(#{username}, #{auth})
     </insert>
 
+    <update id="update">
+        update tbl_member
+        set
+            email = #{email},
+            update_date = now()
+        where username = #{username}
+    </update>
+
 </mapper>

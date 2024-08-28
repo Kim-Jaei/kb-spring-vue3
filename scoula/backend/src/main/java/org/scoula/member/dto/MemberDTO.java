@@ -28,10 +28,11 @@ public class MemberDTO {
                 .email(m.getEmail())
                 .regDate(m.getRegDate())
                 .updateDate(m.getUpdateDate())
-                .authList(m.getAuthList().stream().map(a->a.getAuth()).toList())
+                .authList(m.getAuthList().stream().map(a->a.getAuth()).toList()) // List<Auth> -> List<String> 변환
                 .build();
     }
 
+    // 필요없는 메서드
     public MemberVO toVO() {
         return MemberVO.builder()
                 .username(username)

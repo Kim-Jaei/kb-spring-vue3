@@ -2,6 +2,7 @@ package org.scoula.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.core.Ordered;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.*;
@@ -9,12 +10,13 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 @EnableWebMvc
-@ComponentScan(basePackages = {"org.scoula.controller", "org.scoula.exception", "org.scoula.board"})    // Spring MVC용 컴포넌트 등록을 위한 스캔 페키지
+@ComponentScan(basePackages = {"org.scoula.controller", "org.scoula.exception", "org.scoula.board", "org.scoula.member.controller"})    // Spring MVC용 컴포넌트 등록을 위한 스캔 페키지
 public class ServletConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/")
                 .setViewName("forward:/resources/index.html");
+        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
 
     @Override
@@ -26,16 +28,16 @@ public class ServletConfig implements WebMvcConfigurer {
     }
 
     // jsp view resolver 설정
-    @Override
-    public void configureViewResolvers(ViewResolverRegistry registry) {
-        InternalResourceViewResolver bean = new InternalResourceViewResolver();
-
-        bean.setViewClass(JstlView.class);
-        bean.setPrefix("/WEB-INF/views/");
-        bean.setSuffix(".jsp");
-
-        registry.viewResolver(bean);
-    }
+//    @Override
+//    public void configureViewResolvers(ViewResolverRegistry registry) {
+//        InternalResourceViewResolver bean = new InternalResourceViewResolver();
+//
+//        bean.setViewClass(JstlView.class);
+//        bean.setPrefix("/WEB-INF/views/");
+//        bean.setSuffix(".jsp");
+//
+//        registry.viewResolver(bean);
+//    }
 
     @Bean
     public MultipartResolver multipartResolver(){

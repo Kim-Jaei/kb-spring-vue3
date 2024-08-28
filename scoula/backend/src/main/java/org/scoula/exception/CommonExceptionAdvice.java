@@ -14,6 +14,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 public class CommonExceptionAdvice { // 사실상 컨트롤러
 
     @ExceptionHandler(NoHandlerFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handle404(NoHandlerFoundException ex) {
         log.error(ex);
         return "/resources/index.html";
