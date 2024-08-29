@@ -2,7 +2,10 @@ package org.scoula.exception;
 
 import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
+import org.scoula.member.exception.PasswordMissmatchException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,9 +15,15 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @ControllerAdvice // 컨트롤러(경로)에서 예외가 발생하면 여기서 받겠다
 @Log4j
 public class CommonExceptionAdvice { // 사실상 컨트롤러
+    @ExceptionHandler(PasswordMissmatchException.class)
+    public ResponseEntity<?> handlePasswordError(Exception ex) {
+        return ResponseEntity.status(400)
+                .header(HttpHeaders.CONTENT_TYPE, "application/json; charset=utf-8")
+                .body(ex.getMessage());
+    }
 
     @ExceptionHandler(NoHandlerFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    // @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handle404(NoHandlerFoundException ex) {
         log.error(ex);
         return "/resources/index.html";

@@ -20,6 +20,7 @@ import java.util.Optional;
 @Service @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
     private final static String BASE_DIR = "c:/upload/board";
+
     final private BoardMapper mapper;
 
     @Override
@@ -45,7 +46,7 @@ public class BoardServiceImpl implements BoardService {
             if(part.isEmpty()) continue;
             try {
                 String uploadPath = UploadFiles.upload(BASE_DIR, part);
-                BoardAttachmentVO attach = BoardAttachmentVO.of(part, bno, uploadPath);
+                BoardAttachmentVO attach = BoardAttachmentVO.from(part, bno, uploadPath);
                 mapper.createAttachment(attach);
             } catch (IOException e) {
                 throw new RuntimeException(e); // @Transactional에서 감지, 자동 rollback
@@ -75,7 +76,16 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public BoardDTO update(BoardDTO board) {
         log.info("update......" + board);
+        BoardVO boardVO = board.toVo();
+        log.info("update......" + boardVO);
+
         mapper.update(board.toVo());
+
+        // 파일 업로드 처리
+        List<MultipartFile> files = board.getFiles();
+        if(files != null && !files.isEmpty()) {
+            upload(board.getNo(), files);
+        }
 
         return get(board.getNo());
     }
@@ -85,7 +95,7 @@ public class BoardServiceImpl implements BoardService {
         log.info("delete...." + no);
         BoardDTO board = get(no);
 
-        mapper.delete(no);
+        mapper.delete(no); // 중요
         return board;
 
     }
@@ -94,7 +104,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public BoardAttachmentVO getAttachment(Long no) {
         return mapper.getAttachment(no);
-    }
+    } // downloda용
 
     // 첨부파일 삭제
     @Override

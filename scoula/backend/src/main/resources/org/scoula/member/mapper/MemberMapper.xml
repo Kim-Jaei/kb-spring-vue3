@@ -50,4 +50,11 @@
         where username = #{username}
     </update>
 
+    <update id="updatePassword">
+        update tbl_member
+        set password = #{newPassword},
+            update_date = now()
+        where username = #{username}
+    </update>
+
 </mapper>

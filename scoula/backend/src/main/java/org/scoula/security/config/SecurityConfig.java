@@ -107,16 +107,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .accessDeniedHandler(accessDeniedHandler);
 
         http
-                .authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS).permitAll()
-                // 일단 모든 접근 허용
-                .anyRequest().permitAll();
+            .authorizeRequests()
+            .antMatchers(HttpMethod.OPTIONS).permitAll()
+            .antMatchers(HttpMethod.POST,"/api/member").authenticated()
+            .antMatchers(HttpMethod.PUT,"/api/member", "/api/member/*/changepassword").authenticated()
+            .antMatchers(HttpMethod.POST, "/api/board/**").authenticated()
+            .antMatchers(HttpMethod.PUT, "/api/board/**").authenticated()
+            .antMatchers(HttpMethod.DELETE, "/api/board/**").authenticated()
+            .anyRequest().permitAll();
 
         http.httpBasic().disable()
                 .csrf().disable()
                 .formLogin().disable() // formLogin 기능 비활성화
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // session의 생성 모드를 statelss 모드로 설정
-
 
     }
 
