@@ -106,14 +106,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authenticationEntryPoint(authenticationEntryPoint)
             .accessDeniedHandler(accessDeniedHandler);
 
+        // GET을 제외한 나머지 인증 필요
         http
             .authorizeRequests()
             .antMatchers(HttpMethod.OPTIONS).permitAll()
-            .antMatchers(HttpMethod.POST,"/api/member").authenticated()
+            .antMatchers(HttpMethod.POST,"/api/member/*").authenticated()
             .antMatchers(HttpMethod.PUT,"/api/member", "/api/member/*/changepassword").authenticated()
-            .antMatchers(HttpMethod.POST, "/api/board/**").authenticated()
-            .antMatchers(HttpMethod.PUT, "/api/board/**").authenticated()
-            .antMatchers(HttpMethod.DELETE, "/api/board/**").authenticated()
+            .antMatchers(HttpMethod.POST,"/api/board/**").authenticated()
+            .antMatchers(HttpMethod.PUT,"/api/board/**").authenticated()
+            .antMatchers(HttpMethod.DELETE,"/api/board/**").authenticated()
             .anyRequest().permitAll();
 
         http.httpBasic().disable()

@@ -16,8 +16,9 @@ public class SecurityInitializer extends AbstractSecurityWebApplicationInitializ
         return encodingFilter;
     }
 
-    @Override
-    protected void beforeSpringSecurityFilterChain(ServletContext servletContext) {
-        insertFilters(servletContext, encodingFilter(), new MultipartFilter());
-    }
+//    @Override
+//    protected void beforeSpringSecurityFilterChain(ServletContext servletContext) {
+//        insertFilters(servletContext, encodingFilter(), new MultipartFilter());
+//    }
+
 }

@@ -1,6 +1,6 @@
 <script setup>
 import api from '@/api/boardApi';
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive, computed, watch } from 'vue';
 import moment from 'moment';
 import { useRoute, useRouter } from 'vue-router'; // route: export default 요소 하나, router: 페이지 이동을 담당
 
@@ -9,7 +9,12 @@ const router = useRouter();
 
 const page = ref({});
 
-const articles = computed(() => page.value);
+const articles = computed(() => page.value.getList);
+
+const pageRequest = reactive({
+  page: parseInt(cr.query.page) || 1,
+  amount: parseInt(cr.query.amount) || 10,
+});
 
 const load = async () => {
   try {

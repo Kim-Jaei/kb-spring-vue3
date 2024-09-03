@@ -1,11 +1,15 @@
 package org.scoula.member.service;
 
+import org.scoula.board.dto.BoardDTO;
+import org.scoula.common.pagination.Page;
+import org.scoula.common.pagination.PageRequest;
 import org.scoula.member.dto.ChangePasswordDTO;
 import org.scoula.member.dto.MemberDTO;
 import org.scoula.member.dto.MemberJoinDTO;
 import org.scoula.member.dto.MemberUpdateDTO;
 
 public interface MemberService {
+
     boolean checkDuplicate(String username); // id 중복 체크 : findByUsername()
 
     MemberDTO get(String username); // join 결과 리턴, 상세보기
@@ -15,4 +19,5 @@ public interface MemberService {
     MemberDTO update(MemberUpdateDTO member);
 
     void changePassword(ChangePasswordDTO changePassword);
+
 }

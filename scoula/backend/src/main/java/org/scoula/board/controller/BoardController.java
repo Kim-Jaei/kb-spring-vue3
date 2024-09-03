@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.scoula.board.domain.BoardAttachmentVO;
 import org.scoula.board.dto.BoardDTO;
 import org.scoula.board.service.BoardService;
+import org.scoula.common.pagination.Page;
+import org.scoula.common.pagination.PageRequest;
 import org.scoula.common.util.UploadFiles;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +23,14 @@ public class BoardController {
     private final BoardService service;
 
     @GetMapping("")
-    ResponseEntity<List<BoardDTO>> getList(){
-        return ResponseEntity.ok((service.getList()));
+    public ResponseEntity<Page> getList(PageRequest pageRequest) { // ?page=2&amount=10
+        return ResponseEntity.ok(service.getPage(pageRequest));
     }
+
+//    @GetMapping("")
+//    ResponseEntity<List<BoardDTO>> getList(){
+//        return ResponseEntity.ok((service.getList()));
+//    }
 
     @GetMapping("/{no}")
     public ResponseEntity<BoardDTO> get(@PathVariable Long no) {

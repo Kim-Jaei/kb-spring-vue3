@@ -8,7 +8,7 @@ const router = useRouter();
 const no = cr.params.no;
 const article = reactive({});
 const attachments = ref([]);
-const orgArticle = ref({});
+const orgArticle = ref({}); // 취소 버튼 누르면 얘가 실행되지만 실제로는 article 적용
 const files = ref(null);
 
 const back = () => {
@@ -35,6 +35,7 @@ const submit = async () => {
   router.push({ name: 'board/detail', params: { no }, query: cr.query }); // /board/detail/no?page=1&amount:10 현재 페이지의 쿼리를 그대로 넘긴다
 };
 
+// 취소 버튼 눌렀을 때 원본 복구
 const reset = () => {
   article.no = orgArticle.value.no;
   article.title = orgArticle.value.title;

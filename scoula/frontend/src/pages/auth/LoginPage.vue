@@ -1,21 +1,31 @@
 <script setup>
 import { computed, reactive, ref } from 'vue';
 import { useAuthStore } from '@/stores/auth';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
+const cr = useRoute();
 const router = useRouter();
 const auth = useAuthStore();
+
 const member = reactive({
   username: '',
   password: '',
 });
+
 const error = ref('');
 const disableSubmit = computed(() => !(member.username && member.password));
+
 const login = async () => {
   console.log(member);
   try {
     await auth.login(member);
-    router.push('/');
+    if (cr.query.next) {
+      // 로그인 후 이동할 페이지가 있으면
+      router.push({ name: cr.query.next });
+    } else {
+      // 일반 로그인
+      router.push('/');
+    }
   } catch (e) {
     // 로그인 에러
     console.log('에러=======', e);
